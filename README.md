@@ -1,6 +1,14 @@
 #mfetl
 
-tools for etl
+tools for etl  
+
+###Copy table
+Simple copy table  
+
+###Table queue
+Copy table from source table to destination table then delete rows from sourse table then mark as ready rows in destination table
+Table sourse must have int64 _id  (column name may be not _id)  
+Table destination must have int64 _id and (bool _is_ready marker or string query to get complited ids) (columns name may be not _id and _is_ready)  
 
 
 ## RunMethod
@@ -56,3 +64,4 @@ pg to sql
 ```
 
 
+#### Table Queue

@@ -1,17 +1,39 @@
 package mfetl
 
 import (
+	"errors"
+
 	"github.com/myfantasy/mfe"
 )
 
-// RunMethod Run methods conf param: method
-func RunMethod(conf mfe.Variant) (err error) {
-	method := conf.GE("method").Str()
+// RunMethods Run methods conf param: method
+type RunMethods struct {
+	Funcs map[string]func(conf mfe.Variant) (err error)
+}
 
-	if method == "copy" {
-		return CopyTable(conf)
+// RunByName methods by methodName
+func (rm RunMethods) RunByName(methodName string, conf mfe.Variant) (err error) {
+	method, d := rm.Funcs[conf.GE(methodName).Str()]
+
+	if d {
+		return method(conf)
 	}
+	return errors.New("Method not found")
+}
 
-	return nil
+// Run methods conf param: method
+func (rm RunMethods) Run(conf mfe.Variant) (err error) {
+	method, d := rm.Funcs[conf.GE("method").Str()]
 
+	if d {
+		return method(conf)
+	}
+	return errors.New("Method not found")
+}
+
+// CreateRunMethods create RunMethods with standart funcs
+func CreateRunMethods() (rm RunMethods) {
+	rm.Funcs["copy"] = CopyTable
+
+	return rm
 }
