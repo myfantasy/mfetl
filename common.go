@@ -34,6 +34,7 @@ func (rm RunMethods) Run(conf mfe.Variant) (err error) {
 // CreateRunMethods create RunMethods with standart funcs
 func CreateRunMethods() (rm RunMethods) {
 	rm.Funcs["copy"] = CopyTable
+	rm.Funcs["table_queue"] = TableQueue
 
 	return rm
 }
